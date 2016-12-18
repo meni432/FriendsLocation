@@ -14,6 +14,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -60,6 +61,18 @@ public class FindByGPSActivity extends AppCompatActivity implements LocationList
         updateUIWidgets();
     }
 
+    @Override
+    protected void onStart() {
+        mGoogleApiClient.connect();
+        super.onStart();
+    }
+
+    @Override
+    protected void onStop() {
+        mGoogleApiClient.disconnect();
+        super.onStop();
+    }
+
     private void updateUIWidgets() {
         if (mAddressRequested) {
             mFetchAddressButton.setEnabled(false);
@@ -90,12 +103,16 @@ public class FindByGPSActivity extends AppCompatActivity implements LocationList
 
         LocationSettingsRequest.Builder builder = new LocationSettingsRequest.Builder()
                 .addLocationRequest(mLocationRequest);
+        builder.build();
     }
 
     @Override
     public void onLocationChanged(Location location) {
         mLastLocation = location;
         static_location = location;
+        TextView textView = (TextView)findViewById(R.id.textView);
+        textView.setText(location.toString());
+        Log.d(TAG, "on location change");
     }
 
 
@@ -107,23 +124,18 @@ public class FindByGPSActivity extends AppCompatActivity implements LocationList
         }
 
         mLastLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
-
-    }
-
-    /**
-     * Runs when user clicks the Fetch Address button. Starts the service to fetch the address if
-     * GoogleApiClient is connected.
-     */
-    public void fetchAddressButtonHandler(View view) {
-        // We only start the service to fetch the address if GoogleApiClient is connected.
-        if (mGoogleApiClient.isConnected() && mLastLocation != null) {
-//            startIntentService();
+        if (mLastLocation != null){
+            Log.d(TAG, mLastLocation.toString());
         }
-        mAddressRequested = true;
-        updateUIWidgets();
     }
+
+    public void buttonLocation(View view) {
+        updateCurrentLocation();
+    }
+
 
     private void permissionLocationCheck() {
+        Log.d(TAG, "permission check");
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             // Should we show an explanation?
             if (ActivityCompat.shouldShowRequestPermissionRationale(currentActivity,

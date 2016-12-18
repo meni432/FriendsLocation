@@ -25,4 +25,8 @@ public class FindMyLocationActivity extends AppCompatActivity {
     public void getByGPSSelected(View view) {
         Utility.checkAuthAndGoToActivity(this, FindByGPSActivity.class);
     }
+
+    public void getByQRSelected(View view){
+        Utility.checkAuthAndGoToActivity(this, FindByQRActivity.class);
+    }
 }
