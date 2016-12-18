@@ -1,5 +1,6 @@
 package com.menisamet.friendslocation;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -27,14 +28,14 @@ public class MainActivity extends AppCompatActivity {
         Utility.checkAuthAndGoToActivity(this, FindMyLocationActivity.class);
     }
     void showUserDetail() {
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        FirebaseUser user = Database.getInstance().getCurrentUser();
         TextView username = (TextView) findViewById(R.id.usernameMainView);
         if (user != null) {
             username.setText(user.getDisplayName());
             ImageView avatarImageview = (ImageView) findViewById(R.id.userAvatarImageView);
             Picasso.with(this).load(user.getPhotoUrl()).into(avatarImageview);
         } else {
-            username.setText("Guest");
+            username.setText(R.string.guest_display_text);
         }
     }
 

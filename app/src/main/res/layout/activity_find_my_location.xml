@@ -14,8 +14,57 @@
         android:text="Find My Location Activity"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="29dp"
+        android:id="@+id/activity_label"
         android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true" />
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/activity_label"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="129dp"
-        android:id="@+id/textView2" />
+        android:layout_marginTop="38dp">
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="100dp">
+
+            <Button
+                android:text="GPS"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:id="@+id/button_gps"
+                android:layout_weight="1"
+                android:onClick="getByGPSSelected" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="100dp">
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:id="@+id/button_BLE"
+                android:layout_weight="1"
+                android:text="BLE"
+                android:onClick="getByBLESelected" />
+
+            <Button
+                android:text="QR"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:id="@+id/button_QR"
+                android:layout_weight="1" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+
 </RelativeLayout>

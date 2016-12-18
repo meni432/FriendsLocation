@@ -62,4 +62,6 @@
     <string name="friends_location_logo">Friends Location</string>
     <string name="action_settings">Action Setting</string>
     <string name="action_logout">Logout</string>
+    <string name="guest_display_text">Guest</string>
+    <string name="no_geocoder_aviable">no geocoder available</string>
 </resources>
