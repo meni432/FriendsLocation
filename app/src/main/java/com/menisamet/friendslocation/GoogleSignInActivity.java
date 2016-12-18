@@ -18,6 +18,7 @@ package com.menisamet.friendslocation; /**
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -45,7 +46,8 @@ import com.google.firebase.auth.GoogleAuthProvider;
  */
 public class GoogleSignInActivity extends AppCompatActivity implements
         GoogleApiClient.OnConnectionFailedListener,
-        View.OnClickListener {
+        View.OnClickListener,
+        GoogleApiClient.ConnectionCallbacks{
 
     private static final String TAG = "GoogleActivity";
     private static final int RC_SIGN_IN = 9001;
@@ -115,7 +117,12 @@ public class GoogleSignInActivity extends AppCompatActivity implements
                 if (user != null) {
                     // User is signed in
                     Log.d(TAG, "onAuthStateChanged:signed_in:" + user.getUid());
-                    goToNextActivity();
+                    Database.getInstance().setCurrentUser(user);
+                    if (!logOut) {
+                        goToNextActivity();
+                    } else {
+                        logOut = false;
+                    }
                 } else {
                     // User is signed out
                     Log.d(TAG, "onAuthStateChanged:signed_out");
@@ -135,7 +142,8 @@ public class GoogleSignInActivity extends AppCompatActivity implements
         startActivity(intent);
         finish();
     }
-    
+
+
 
     // [START on_start_add_listener]
     @Override
@@ -277,5 +285,17 @@ public class GoogleSignInActivity extends AppCompatActivity implements
         } else if (i == R.id.disconnect_button) {
             revokeAccess();
         }
+    }
+
+    @Override
+    public void onConnected(@Nullable Bundle bundle) {
+        if (logOut){
+            signOut();
+        }
+    }
+
+    @Override
+    public void onConnectionSuspended(int i) {
+
     }
 }

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/activity_main"
     android:layout_width="match_parent"
@@ -10,19 +11,83 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.menisamet.friendslocation.MainActivity">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Hello World!"
-        android:id="@+id/textView" />
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:background="@color/colorAccent">
+
+        <TextView
+            android:text="Welcome"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:id="@+id/textView"
+            android:textSize="30sp"
+            android:textColor="#ffffffff"
+
+            android:layout_alignParentTop="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_marginLeft="35dp"
+            android:layout_marginStart="35dp" />
+
+        <TextView
+            android:text="Username"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/usernameMainView"
+            android:textColor="#ffffffff"
+            android:layout_below="@+id/textView"
+            android:layout_alignLeft="@+id/textView"
+            android:layout_alignStart="@+id/textView" />
+
+        <!--<ImageView-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--app:srcCompat="@drawable/common_google_signin_btn_icon_dark"-->
+            <!--android:layout_marginRight="39dp"-->
+            <!--android:layout_marginEnd="39dp"-->
+            <!--android:id="@+id/userAvatarImageView"-->
+<!--/>-->
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/userAvatarImageView"
+            android:layout_width="96dp"
+            android:layout_height="96dp"
+            android:src="@drawable/common_google_signin_btn_icon_dark"
+            app:civ_border_width="2dp"
+            app:civ_border_color="#ffffffff"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginRight="17dp"
+            android:layout_marginEnd="17dp" />
+
+    </RelativeLayout>
+
 
     <Button
         android:text="Find My Location"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/textView"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="142dp"
         android:id="@+id/button2"
-        android:onClick="loadSignInAcrivity" />
+        android:onClick="loadSignInAcrivity"
+        android:layout_below="@+id/google_icon"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="43dp" />
+
+    <ImageView
+        style="@style/ThemeOverlay.FirebaseIcon"
+        android:id="@+id/google_icon"
+        android:contentDescription="@string/friends_location_logo"
+        android:src="@drawable/logo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="84dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
 </RelativeLayout>

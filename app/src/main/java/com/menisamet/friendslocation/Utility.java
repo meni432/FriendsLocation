@@ -2,6 +2,7 @@ package com.menisamet.friendslocation;
 
 import android.content.Context;
 import android.content.Intent;
+import android.widget.Toast;
 
 /**
  * Created by meni on 05/12/16.
@@ -26,5 +27,10 @@ public class Utility {
         intent.putExtra(EXTRA_NEXT_ACTIVITY, MainActivity.class);
         intent.putExtra(EXTRA_LOG_OUT, true);
         context.startActivity(intent);
+    }
+
+    public static void showToast(Context context, String text) {
+        Toast toast = Toast.makeText(context, text, Toast.LENGTH_SHORT);
+        toast.show();
     }
 }
