@@ -35,6 +35,8 @@ dependencies {
     compile 'com.android.support.constraint:constraint-layout:1.0.0-beta4'
     compile 'com.squareup.picasso:picasso:2.5.2'
     compile 'de.hdodenhof:circleimageview:2.1.0'
+//    compile 'uk.co.alt236:bluetooth-le-library-android:1.0.0'
+
 
 
 }
