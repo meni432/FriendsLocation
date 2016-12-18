@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "355395218260",
+    "firebase_url": "https://friends-location-50a95.firebaseio.com",
+    "project_id": "friends-location-50a95",
+    "storage_bucket": "friends-location-50a95.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:355395218260:android:6f3b94fc1274d0cd",
+        "android_client_info": {
+          "package_name": "com.menisamet.friendslocation"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "355395218260-2isqs6hv36db1ccca6i9s0bf0tcu2o9c.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.menisamet.friendslocation",
+            "certificate_hash": "FC445CE143C90D55CFCC4ED1F390336EC36FF6C8"
+          }
+        },
+        {
+          "client_id": "355395218260-3ike62u17hf6apbjocolpaogfdb3103o.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCjutpx1IDu_-kyiKttx6qeO53588ofd_c"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "355395218260-3ike62u17hf6apbjocolpaogfdb3103o.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
