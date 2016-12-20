@@ -12,6 +12,9 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -23,6 +26,8 @@ import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.LocationSettingsRequest;
+import com.menisamet.friendslocation.models.MapLocation;
+import com.menisamet.friendslocation.models.MapPoint;
 
 public class FindByGPSActivity extends AppCompatActivity implements LocationListener, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
 
@@ -45,20 +50,23 @@ public class FindByGPSActivity extends AppCompatActivity implements LocationList
 
     protected boolean mAddressRequested;
 
+    long mLastUpdateTime;
 
     // GUI element
-    Button mFetchAddressButton;
+//    Button mFetchAddressButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_find_by_gps);
 
-        mFetchAddressButton = (Button)findViewById(R.id.button);
         mAddressRequested = false;
+        mLastUpdateTime = 0;
         buildGoogleApiClient();
         createLocationRequest();
         updateUIWidgets();
+
+        Database.getInstance().saveCacheToDatabase();
     }
 
     @Override
@@ -74,11 +82,6 @@ public class FindByGPSActivity extends AppCompatActivity implements LocationList
     }
 
     private void updateUIWidgets() {
-        if (mAddressRequested) {
-            mFetchAddressButton.setEnabled(false);
-        } else {
-            mFetchAddressButton.setEnabled(true);
-        }
     }
 
     /**
@@ -110,6 +113,8 @@ public class FindByGPSActivity extends AppCompatActivity implements LocationList
     public void onLocationChanged(Location location) {
         mLastLocation = location;
         static_location = location;
+        Database.getInstance().setRealTimeMapPoint(new MapLocation(mLastLocation));
+        Database.getInstance().saveCacheToDatabase();
         TextView textView = (TextView)findViewById(R.id.textView);
         textView.setText(location.toString());
         Log.d(TAG, "on location change");
@@ -129,6 +134,24 @@ public class FindByGPSActivity extends AppCompatActivity implements LocationList
         }
     }
 
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.activity_find_by_gps_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_find_location:
+                updateCurrentLocation();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
     public void buttonLocation(View view) {
         updateCurrentLocation();
     }
