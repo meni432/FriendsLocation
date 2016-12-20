@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.menisamet.friendslocation">
+    <uses-feature android:name="android.hardware.bluetooth_le" android:required="true"/>
+
+    <uses-permission android:name="android.permission.BLUETOOTH"/>
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN"/>
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
 
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.INTERNET" />
@@ -32,7 +37,9 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".FindMyLocationActivity" />
         <activity android:name=".FindByGPSActivity" />
-        <activity android:name=".FindByQRActivity"></activity>
+        <activity android:name=".FindByQRActivity" />
+        <activity android:name=".FindByBLEActivity"></activity>
+        <service android:name=".BluetoothLeService" android:enabled="true"/>
     </application>
 
 </manifest>

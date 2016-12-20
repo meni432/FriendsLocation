@@ -29,4 +29,7 @@ public class FindMyLocationActivity extends AppCompatActivity {
     public void getByQRSelected(View view){
         Utility.checkAuthAndGoToActivity(this, FindByQRActivity.class);
     }
+    public void getByBLESelected(View view){
+        Utility.checkAuthAndGoToActivity(this, FindByBLEActivity.class);
+    }
 }
