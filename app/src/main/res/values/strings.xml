@@ -66,6 +66,7 @@
     <string name="no_geocoder_aviable">no geocoder available</string>
     <string name="action_find_location">Find Location</string>
     <string name="action_add_location">Add Location</string>
+    <string name="title_activity_maps">Map</string>
     <string name="ble_not_supported">BLE is not supported</string>
     <string name="error_bluetooth_not_supported">Bluetooth not supported.</string>
 
