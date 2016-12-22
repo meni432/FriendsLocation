@@ -14,11 +14,11 @@ public class Utility {
 
 
     public static void checkAuthAndGoToActivity(Context context, Class nextActivity) {
-//        Intent intent = new Intent(context, GoogleSignInActivity.class);
-//        intent.putExtra(EXTRA_NEXT_ACTIVITY, nextActivity);
-//        context.startActivity(intent);
-        Intent intent = new Intent(context, nextActivity);
+        Intent intent = new Intent(context, GoogleSignInActivity.class);
+        intent.putExtra(EXTRA_NEXT_ACTIVITY, nextActivity);
         context.startActivity(intent);
+//        Intent intent = new Intent(context, nextActivity);
+//        context.startActivity(intent);
 
     }
 

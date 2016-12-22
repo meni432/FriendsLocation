@@ -26,10 +26,17 @@ import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.LocationSettingsRequest;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.menisamet.friendslocation.models.MapLocation;
 import com.menisamet.friendslocation.models.MapPoint;
 
-public class FindByGPSActivity extends AppCompatActivity implements LocationListener, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
+public class FindByGPSActivity extends AppCompatActivity implements LocationListener, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener , OnMapReadyCallback {
 
     public static final String TAG = "TAG_" + FindByGPSActivity.class.getCanonicalName();
     public static Location static_location = null;
@@ -55,6 +62,9 @@ public class FindByGPSActivity extends AppCompatActivity implements LocationList
     // GUI element
 //    Button mFetchAddressButton;
 
+
+    private GoogleMap mMap;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -67,6 +77,10 @@ public class FindByGPSActivity extends AppCompatActivity implements LocationList
         updateUIWidgets();
 
         Database.getInstance().saveCacheToDatabase();
+
+        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
+                .findFragmentById(R.id.map);
+        mapFragment.getMapAsync(this);
     }
 
     @Override
@@ -114,10 +128,17 @@ public class FindByGPSActivity extends AppCompatActivity implements LocationList
         mLastLocation = location;
         static_location = location;
         Database.getInstance().setRealTimeMapPoint(new MapLocation(mLastLocation));
-        Database.getInstance().saveCacheToDatabase();
+        LatLng latLng = new LatLng(location.getLatitude(),location.getLongitude());
+        if (mMap != null) {
+            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng,15));
+//            MarkerOptions m = new MarkerOptions().position(latLng).title("Current Location");
+//            mMap.addMarker(m);
+        }
+//        Database.getInstance().saveCacheToDatabase();
         TextView textView = (TextView)findViewById(R.id.textView);
         textView.setText(location.toString());
         Log.d(TAG, "on location change");
+        Database.getInstance().loadDataFromDB();
     }
 
 
@@ -208,5 +229,17 @@ public class FindByGPSActivity extends AppCompatActivity implements LocationList
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
 
+    }
+
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+        mMap = googleMap;
+
+        // Add a marker in Sydney and move the camera
+        LatLng israel = new LatLng(32.106, 35.204);
+        LatLng sydney = new LatLng(-34, 151);
+//        mMap.addMarker(new MarkerOptions().position(israel).title("Ariel"));
+//        mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
     }
 }

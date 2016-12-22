@@ -1,7 +1,5 @@
 package com.menisamet.friendslocation.models;
 
-import android.location.Location;
-
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.Exclude;
 
@@ -15,14 +13,46 @@ import java.util.Map;
 public class UserDetails {
     private FirebaseUser mFirebaseUser;
     private MapLocation mLastLocation;
+    private String userName;
+    private String mFirebaseUserUUID;
 
-//    public FirebaseUser getFirebaseUser() {
+    //    public FirebaseUser getFirebaseUser() {
 //        return mFirebaseUser;
 //    }
+    @Exclude
+    public Map<String, Object> toMap() {
+        HashMap<String, Object> result = new HashMap<>();
+        result.put("firebaseUserUUID", mFirebaseUser.getUid());
+        result.put("userName", userName);
+        result.put("lastLocation", mLastLocation);
+
+        return result;
+    }
+
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+    public void setFirebaseUserUUID(String mFirebaseUserUUID) {
+        this.mFirebaseUserUUID = mFirebaseUserUUID;
+    }
+
+    public String getFirebaseUserUUID() {
+        if (mFirebaseUser != null) {
+            return mFirebaseUser.getUid();
+        }
+        return mFirebaseUserUUID;
+    }
 
     public String getUserName() {
-        return mFirebaseUser.getDisplayName();
+        if (mFirebaseUser != null) {
+            return mFirebaseUser.getDisplayName();
+        } else {
+            return userName;
+        }
     }
+
     public void setFirebaseUser(FirebaseUser mFirebaseUser) {
         this.mFirebaseUser = mFirebaseUser;
     }
@@ -34,5 +64,32 @@ public class UserDetails {
 
     public void setLastLocation(MapLocation mLastLocation) {
         this.mLastLocation = mLastLocation;
+    }
+
+    @Override
+    public String toString() {
+        return "UserDetails{" +
+                "mFirebaseUser=" + mFirebaseUser +
+                ", mLastLocation=" + mLastLocation +
+                ", userName='" + userName + '\'' +
+                ", mFirebaseUserUUID='" + mFirebaseUserUUID + '\'' +
+                '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        UserDetails that = (UserDetails) o;
+
+        if (!mLastLocation.equals(that.mLastLocation)) return false;
+        return userName.equals(that.userName);
+
+    }
+
+    @Override
+    public int hashCode() {
+        return userName.hashCode();
     }
 }

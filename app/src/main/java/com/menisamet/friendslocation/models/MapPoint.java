@@ -2,7 +2,6 @@ package com.menisamet.friendslocation.models;
 
 import com.google.firebase.database.Exclude;
 
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -13,7 +12,7 @@ import java.util.Map;
 public class MapPoint {
 
     private UserDetails mUserDetailsOwner;
-    private Date mDate;
+    private String mFirebaseUserUUIDOwner;
     private String mTag;
     private MapLocation mMapLocation;
     private String dbKey;
@@ -22,14 +21,29 @@ public class MapPoint {
     @Exclude
     public Map<String, Object> toMap() {
         HashMap<String, Object> result = new HashMap<>();
-        result.put("UserDetails", mUserDetailsOwner);
-        result.put("Date", mDate);
+        result.put("firebaseUserUUID", mUserDetailsOwner.getFirebaseUserUUID());
         result.put("Tag", mTag);
-        result.put("MapLocation", mMapLocation);
+        result.put("MapLocation", mMapLocation.toMap());
 
         return result;
     }
     public MapPoint() {
+    }
+
+
+    public String getFirebaseUserUUIDOwner() {
+        return mFirebaseUserUUIDOwner;
+    }
+
+    public void setFirebaseUserUUIDOwner(String firebaseUserUUIDOwner) {
+        this.mFirebaseUserUUIDOwner = firebaseUserUUIDOwner;
+    }
+
+    public String getUserDetailsOwnerUUID() {
+        if (mUserDetailsOwner != null) {
+            mUserDetailsOwner.getFirebaseUserUUID();
+        }
+        return null;
     }
 
     public UserDetails getUserDetailsOwner() {
@@ -38,14 +52,6 @@ public class MapPoint {
 
     public void setUserDetailsOwner(UserDetails mUserDetailsOwner) {
         this.mUserDetailsOwner = mUserDetailsOwner;
-    }
-
-    public Date getDate() {
-        return mDate;
-    }
-
-    public void setmDate(Date mDate) {
-        this.mDate = mDate;
     }
 
     public String getmTag() {
@@ -70,5 +76,36 @@ public class MapPoint {
 
     public void setDbKey(String dbKey) {
         this.dbKey = dbKey;
+    }
+
+    @Override
+    public String toString() {
+        return "MapPoint{" +
+                "mUserDetailsOwner=" + mUserDetailsOwner +
+                ", mTag='" + mTag + '\'' +
+                ", mMapLocation=" + mMapLocation +
+                ", dbKey='" + dbKey + '\'' +
+                '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        MapPoint mapPoint = (MapPoint) o;
+
+        if (mTag != null ? !mTag.equals(mapPoint.mTag) : mapPoint.mTag != null) return false;
+        if (!mMapLocation.equals(mapPoint.mMapLocation)) return false;
+        return dbKey != null ? dbKey.equals(mapPoint.dbKey) : mapPoint.dbKey == null;
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = mTag != null ? mTag.hashCode() : 0;
+        result = 31 * result + mMapLocation.hashCode();
+        result = 31 * result + (dbKey != null ? dbKey.hashCode() : 0);
+        return result;
     }
 }
