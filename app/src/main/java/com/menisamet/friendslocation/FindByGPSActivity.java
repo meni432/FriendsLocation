@@ -30,11 +30,16 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.menisamet.friendslocation.models.MapLocation;
 import com.menisamet.friendslocation.models.MapPoint;
+
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 
 public class FindByGPSActivity extends AppCompatActivity implements LocationListener, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener , OnMapReadyCallback {
 
@@ -64,6 +69,7 @@ public class FindByGPSActivity extends AppCompatActivity implements LocationList
 
 
     private GoogleMap mMap;
+    private Marker currentLocationMarker;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -131,12 +137,19 @@ public class FindByGPSActivity extends AppCompatActivity implements LocationList
         LatLng latLng = new LatLng(location.getLatitude(),location.getLongitude());
         if (mMap != null) {
             mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng,15));
-//            MarkerOptions m = new MarkerOptions().position(latLng).title("Current Location");
-//            mMap.addMarker(m);
+            if (currentLocationMarker == null) {
+                currentLocationMarker = mMap.addMarker(new MarkerOptions().position(latLng).title("Current Location"));
+                currentLocationMarker.setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE));
+                currentLocationMarker.showInfoWindow();
+
+            } else {
+                currentLocationMarker.setPosition(latLng);
+            }
         }
 //        Database.getInstance().saveCacheToDatabase();
         TextView textView = (TextView)findViewById(R.id.textView);
         textView.setText(location.toString());
+        textView.setText("latitude: "+latLng.latitude + " longitude: "+latLng.longitude);
         Log.d(TAG, "on location change");
         Database.getInstance().loadDataFromDB();
     }
@@ -240,6 +253,6 @@ public class FindByGPSActivity extends AppCompatActivity implements LocationList
         LatLng sydney = new LatLng(-34, 151);
 //        mMap.addMarker(new MarkerOptions().position(israel).title("Ariel"));
 //        mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(israel));
     }
 }

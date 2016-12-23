@@ -20,6 +20,7 @@ public class FindMyLocationActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_find_my_location);
+        Database.getInstance().loadDataFromDB();
     }
 
     public void getByGPSSelected(View view) {

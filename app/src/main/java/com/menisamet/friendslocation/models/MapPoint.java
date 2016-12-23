@@ -43,7 +43,7 @@ public class MapPoint {
         if (mUserDetailsOwner != null) {
             mUserDetailsOwner.getFirebaseUserUUID();
         }
-        return null;
+        return mFirebaseUserUUIDOwner;
     }
 
     public UserDetails getUserDetailsOwner() {
@@ -78,10 +78,12 @@ public class MapPoint {
         this.dbKey = dbKey;
     }
 
+
     @Override
     public String toString() {
         return "MapPoint{" +
                 "mUserDetailsOwner=" + mUserDetailsOwner +
+                ", mFirebaseUserUUIDOwner='" + mFirebaseUserUUIDOwner + '\'' +
                 ", mTag='" + mTag + '\'' +
                 ", mMapLocation=" + mMapLocation +
                 ", dbKey='" + dbKey + '\'' +
@@ -100,6 +102,8 @@ public class MapPoint {
         return dbKey != null ? dbKey.equals(mapPoint.dbKey) : mapPoint.dbKey == null;
 
     }
+
+
 
     @Override
     public int hashCode() {

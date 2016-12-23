@@ -2,6 +2,7 @@ package com.menisamet.friendslocation.models;
 
 import android.location.Location;
 
+import com.google.android.gms.maps.model.LatLng;
 import com.google.firebase.database.Exclude;
 
 import java.util.Date;
@@ -31,6 +32,10 @@ public class MapLocation {
     public MapLocation(Location location) {
         this();
         setLocation(location);
+    }
+
+    public LatLng getLatLng() {
+        return new LatLng(latitude, longitude);
     }
 
     public void updateDate(){

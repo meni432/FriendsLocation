@@ -136,10 +136,18 @@ public class Database {
                             userDetails = userUUIDtoUserDetailsHashMap.get(firebaseUserUUID);
                             mapPoint.setUserDetailsOwner(userDetails);
                         } else {
+                            mapPoint.setFirebaseUserUUIDOwner(firebaseUserUUID);
                         }
+                    }
+                    String tag = mapPointSnapshot.child("tag").getValue(String.class);
+                    if (tag != null){
+                        mapPoint.setTag(tag);
                     }
 
                     mapPointArrayList.add(mapPoint);
+                    if (mapPoint.getDbKey() != null) {
+                        mapDbKeyToMapPoint.put(mapPoint.getDbKey(), mapPoint);
+                    }
 //                    if (!contain && mapPoint != null) {
 //                        mapPoints.add(mapPoint);
 //                        if (mapPoint.getDbKey() != null) {
@@ -172,18 +180,20 @@ public class Database {
                 ArrayList<UserDetails> userDetailsArrayList = new ArrayList<>();
                 for (DataSnapshot userDetailsSnapshot : dataSnapshot.getChildren()) {
                     UserDetails userDetails = new UserDetails();
-                    double latDouble = userDetailsSnapshot.child("lastLocation").child("latitude").getValue(Double.class);
-                    double lotDouble = userDetailsSnapshot.child("lastLocation").child("longitude").getValue(Double.class);
-                    MapLocation mapLocation = new MapLocation(latDouble, lotDouble);
-                    String userName = userDetailsSnapshot.child("userName").getValue(String.class);
-                    String firebaseUserUUID = userDetailsSnapshot.child("firebaseUserUUID").getValue(String.class);
-                    if (firebaseUserUUID != null) {
-                        userUUIDtoUserDetailsHashMap.put(firebaseUserUUID, userDetails);
+                    if (userDetailsSnapshot.child("lastLocation").exists()) {
+                        double latDouble = userDetailsSnapshot.child("lastLocation").child("latitude").getValue(Double.class);
+                        double lotDouble = userDetailsSnapshot.child("lastLocation").child("longitude").getValue(Double.class);
+                        MapLocation mapLocation = new MapLocation(latDouble, lotDouble);
+                        String userName = userDetailsSnapshot.child("userName").getValue(String.class);
+                        String firebaseUserUUID = userDetailsSnapshot.child("firebaseUserUUID").getValue(String.class);
+                        if (firebaseUserUUID != null) {
+                            userUUIDtoUserDetailsHashMap.put(firebaseUserUUID, userDetails);
+                        }
+                        userDetails.setUserName(userName);
+                        userDetails.setLastLocation(mapLocation);
+                        userDetails.setFirebaseUserUUID(firebaseUserUUID);
+                        userDetailsArrayList.add(userDetails);
                     }
-                    userDetails.setUserName(userName);
-                    userDetails.setLastLocation(mapLocation);
-                    userDetails.setFirebaseUserUUID(firebaseUserUUID);
-                    userDetailsArrayList.add(userDetails);
                 }
                 allUserDetail = userDetailsArrayList;
 
@@ -201,6 +211,20 @@ public class Database {
         mMapPointReference.addValueEventListener(mapPointListener);
         mUserDetailsReference.addValueEventListener(userDetailsListener);
 
+    }
+
+    public UserDetails getUserByUUID(String uuid) {
+        if (userUUIDtoUserDetailsHashMap.containsKey(uuid)) {
+            return userUUIDtoUserDetailsHashMap.get(uuid);
+        }
+        return null;
+    }
+
+    public MapPoint getMapPointByUID(String id) {
+        if (mapDbKeyToMapPoint.containsKey(id)) {
+            return mapDbKeyToMapPoint.get(id);
+        }
+        return null;
     }
 
     public HashMap<String, MapPoint> getMapDbKeyToMapPoint() {
